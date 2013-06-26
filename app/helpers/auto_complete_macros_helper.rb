@@ -95,8 +95,8 @@ module AutoCompleteMacrosHelper
   # auto_complete action if you need to decorate it further.
   def auto_complete_result(entries, field, phrase = nil)
     return unless entries
-    items = entries.map { |entry| content_tag("li", phrase ? highlight(entry[field], phrase) : h(entry[field])) }
-    content_tag("ul", items.uniq)
+    items = entries.map { |entry| content_tag("li", phrase ? highlight(entry[field], phrase) : entry[field]) }
+    content_tag("ul", safe_join(items.uniq))
   end
 
   # Wrapper for text_field with added AJAX autocompletion functionality.
@@ -112,32 +112,34 @@ module AutoCompleteMacrosHelper
   end
 
   private
-    def auto_complete_stylesheet
-      content_tag('style', <<-EOT, :type => Mime::CSS)
+  STYLE = <<-EOT.html_safe.freeze
         div.auto_complete {
-          width: 350px;
-          background: #fff;
-        }
-        div.auto_complete ul {
-          border:1px solid #888;
-          margin:0;
-          padding:0;
-          width:100%;
-          list-style-type:none;
-        }
-        div.auto_complete ul li {
-          margin:0;
-          padding:3px;
-        }
-        div.auto_complete ul li.selected {
-          background-color: #ffb;
-        }
-        div.auto_complete ul strong.highlight {
-          color: #800;
-          margin:0;
-          padding:0;
-        }
-      EOT
-    end
+      width: 350px;
+      background: #fff;
+    }
+    div.auto_complete ul {
+      border:1px solid #888;
+      margin:0;
+      padding:0;
+      width:100%;
+      list-style-type:none;
+    }
+    div.auto_complete ul li {
+      margin:0;
+      padding:3px;
+    }
+    div.auto_complete ul li.selected {
+      background-color: #ffb;
+    }
+    div.auto_complete ul strong.highlight {
+      color: #800;
+      margin:0;
+      padding:0;
+    }
+  EOT
+
+  def auto_complete_stylesheet
+    content_tag('style', STYLE, :type => Mime::CSS)
+  end
 
 end
