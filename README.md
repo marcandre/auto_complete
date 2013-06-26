@@ -1,24 +1,32 @@
 # AutoComplete
 
-TODO: Write a gem description
+Gem port of the legacy auto_complete plugin for Rails 3+
 
-## Installation
+## Example
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile:Example:
 
-    gem 'auto_complete'
+  # Controller
+  class BlogController < ApplicationController
+    auto_complete_for :post, :title
+  end
 
-And then execute:
+  # View
+  <%= text_field_with_auto_complete :post, title %>
 
-    $ bundle
+By default, auto_complete_for limits the results to 10 entries,
+and sorts by the given field.
 
-Or install it yourself as:
+auto_complete_for takes a third parameter, an options hash to
+the find method used to search for the records:
 
-    $ gem install auto_complete
+  auto_complete_for :post, :title, :limit => 15, :order => 'created_at DESC'
 
-## Usage
+For more examples, see script.aculo.us:
+* http://script.aculo.us/demos/ajax/autocompleter
+* http://script.aculo.us/demos/ajax/autocompleter_customized
 
-TODO: Write usage instructions here
+Copyright (c) 2007 David Heinemeier Hansson, released under the MIT license
 
 ## Contributing
 
